@@ -10,3 +10,6 @@ Esta página obtiene dinámicamente la lista de Pokemon de la [PokeAPI](https://
 
 
 # TODO
+- globo empieza a rotar con el botón start
+- estilos grid element
+- módulo pokedex
