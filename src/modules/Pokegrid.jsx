@@ -74,20 +74,26 @@ function Pokegrid({ start = false }) {
 
   // get pokemon from the API
   useEffect(() => {
+    if (pokemonToGet > 0) {
+      console.log("fetching pokemon");
     var dict = pokemonDict;
-    for (let i = 0; i < pokemonToGet; i++) {
-      axios.get(POKEMON_API + `/${lastId + i}`).then((response) => {
-        const data = response.data;
-        dict[data.name] = data;
+      var promiseList = [...Array(pokemonToGet).keys()].map((x) => {
+        return axios.get(POKEMON_API + `/${lastId + x}`);
       });
-    }
+      Promise.all(promiseList).then((responseList) => {
+        responseList.forEach((res) => {
+          dict[res.data.name] = res.data;
+      });
+        console.log("pokemon fetching succeded");
     setPokemonDict(dict);
-    setLastId(lastId + pokemonToGet);
-    setPokemonToGet(0);
+        setLastId(lastId + responseList.length);
+        setPokemonToGet(pokemonToGet - responseList.length);
     setDataReady(true);
-  }, []);
-
-  console.log(Object.keys(pokemonDict));
+      });
+    } else {
+      setDataReady(true);
+    }
+  }, [dataReady]);
   if (start) {
     return (
       <div className="grid-wrapper">
