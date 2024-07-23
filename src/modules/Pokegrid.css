@@ -1,3 +1,4 @@
+@import url('https://fonts.cdnfonts.com/css/public-pixel');
 .grid-container {
     position: absolute;
     left: 50%;
@@ -12,4 +13,5 @@
     justify-content: space-evenly;
     border-radius: 30px;
     overflow-y: auto;
+    font-family: 'Public Pixel', sans-serif;
 }
