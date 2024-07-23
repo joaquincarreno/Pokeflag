@@ -1,6 +1,6 @@
 @import url('https://fonts.cdnfonts.com/css/public-pixel');
 .card-container {
-    /* width: 25%; */
+    width: 25%;
     /* height: 20%; */
     display: flex;
     flex-flow: column nowrap;
@@ -11,12 +11,15 @@
 }
 
 .sprite {
-    width: 50%
+    width: 192px;
+    position: relative;
+    top: -30px;
 }
 
 .card-title {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column wrap;
+    z-index: 2;
 }
 
 .card-id {

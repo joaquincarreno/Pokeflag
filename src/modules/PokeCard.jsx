@@ -10,10 +10,12 @@ function PokeCard({ pokemon }) {
   return (
     <div className="card-container">
       <div className="card-title">
-        <div className="card-id">#{pokemon.id}: </div>
         <div className="card-name">{capitalizeFirstLetter(pokemon.name)}</div>
+        <div className="card-id">#{pokemon.id}: </div>
       </div>
-      <img className="sprite" src={pokemon.sprites.front_default} />
+      <div className="sprite">
+        <img style={{ width: "100%" }} src={pokemon.sprites.front_default} />
+      </div>
     </div>
   );
 }
