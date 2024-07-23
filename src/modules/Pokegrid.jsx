@@ -32,6 +32,26 @@ const createGrid = (pokeList, data) => {
   );
 };
 
+const createGridController = (page, pageSetter, maxPage = 30) => {
+  return (
+    <div>
+      <button
+        onClick={() => {
+          page > 0 && pageSetter(page - 1);
+        }}
+      >
+        {"<"}
+      </button>
+      <button
+        onClick={() => {
+          page < maxPage && pageSetter(page + 1);
+        }}
+      >
+        {">"}
+      </button>
+    </div>
+  );
+};
 
 function Pokegrid({ start = false }) {
   const [dataReady, setDataReady] = useState(false);
@@ -39,6 +59,18 @@ function Pokegrid({ start = false }) {
   const [pokemonDict, setPokemonDict] = useState({});
   const [pokemonToGet, setPokemonToGet] = useState(30);
   const [lastId, setLastId] = useState(1);
+
+  const [page, setPage] = useState(0);
+
+  // update filters
+  useEffect(() => {
+    const pokeCount = Object.keys(pokemonDict).length;
+    if ((page + 1) * 30 > pokeCount) {
+      setDataReady(false);
+      setPokemonToGet(30);
+    }
+    // console.log(page);
+  }, [page]);
 
   // get pokemon from the API
   useEffect(() => {
@@ -59,6 +91,7 @@ function Pokegrid({ start = false }) {
   if (start) {
     return (
       <div className="grid-wrapper">
+        {createGridController(page, setPage)}
         {dataReady ? (
           createGrid(Object.keys(pokemonDict), pokemonDict)
         ) : (
