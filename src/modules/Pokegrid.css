@@ -1,0 +1,15 @@
+.grid-container {
+    position: absolute;
+    left: 50%;
+    z-index: 10;
+    -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    width: 65%;
+    height: 85%;
+    background-color: rgba(40, 40, 40, 0.8);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    border-radius: 30px;
+    overflow-y: auto;
+}

@@ -1,0 +1,9 @@
+.element-container {
+    width: 33%;
+    height: 20%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+
+}
