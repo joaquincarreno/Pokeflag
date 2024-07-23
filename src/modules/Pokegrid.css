@@ -31,6 +31,12 @@
     height: 20%;
 }
 
+.grid-controller {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+}
+
 .loading {
     position: relative;
     top: 50%;

@@ -32,9 +32,15 @@ const createGrid = (pokeList, data) => {
   );
 };
 
-const createGridController = (page, pageSetter, maxPage = 30) => {
+const createGridController = (
+  page,
+  pageSetter,
+  maxPage = 30,
+  textFilter,
+  textFilterSetter
+) => {
   return (
-    <div>
+    <div className="grid-controller">
       <button
         onClick={() => {
           page > 0 && pageSetter(page - 1);
@@ -42,6 +48,10 @@ const createGridController = (page, pageSetter, maxPage = 30) => {
       >
         {"<"}
       </button>
+      <input
+        value={textFilter}
+        onInput={(e) => textFilterSetter(e.target.value)}
+      />
       <button
         onClick={() => {
           page < maxPage && pageSetter(page + 1);
@@ -59,12 +69,23 @@ function Pokegrid({ start = false }) {
 
   const [pokemonDict, setPokemonDict] = useState({});
   const [pokemonToGet, setPokemonToGet] = useState(30);
+  const [filteredPokemon, setFileteredPokemon] = useState([]);
   const [visiblePokemon, setVisiblePokemon] = useState([]);
   const [lastId, setLastId] = useState(1);
 
   const [page, setPage] = useState(0);
+  const [textFilter, setTextFilter] = useState("");
 
-  // update filters
+  // update filter
+  useEffect(() => {
+    const filtered = Object.keys(pokemonDict).filter((name) =>
+      name.includes(textFilter)
+    );
+    console.log(filtered);
+    setFileteredPokemon(filtered);
+  }, [textFilter, dataReady]);
+
+  // update page
   useEffect(() => {
     const pokeCount = Object.keys(pokemonDict).length;
     setVisReady(false);
@@ -102,15 +123,22 @@ function Pokegrid({ start = false }) {
   useEffect(() => {
     const pokeList = Object.keys(pokemonDict);
     // filtrar y dividir arreglo de pokemons
-    console.log("alos", pokeList);
+    // console.log("alos", pokeList);
     setVisiblePokemon(pokeList.slice(page * 30, (page + 1) * 30));
     setVisReady(true);
+    console.log("updated visible pokemon");
   }, [dataReady]);
 
   if (start) {
     return (
       <div className="grid-wrapper">
-        {createGridController(page, setPage)}
+        {createGridController(
+          page,
+          setPage,
+          Math.ceil(1000 / 3),
+          textFilter,
+          setTextFilter
+        )}
         {visReady ? (
           createGrid(visiblePokemon, pokemonDict)
         ) : (
