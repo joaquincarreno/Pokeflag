@@ -1,5 +1,6 @@
 @import url('https://fonts.cdnfonts.com/css/public-pixel');
-.grid-container {
+
+.grid-wrapper {
     position: absolute;
     left: 50%;
     z-index: 10;
@@ -9,9 +10,22 @@
     height: 85%;
     background-color: rgba(40, 40, 40, 0.8);
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: column nowrap;
+}
+
+.grid-container {
+    display: flex;
+    flex-flow: column nowrap;
     justify-content: space-evenly;
     border-radius: 30px;
     overflow-y: auto;
     font-family: 'Public Pixel', sans-serif;
+}
+.grid-row {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+    justify-content: space-around;
+    width: 100%;
+    height: 20%;
 }

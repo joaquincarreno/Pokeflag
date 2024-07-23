@@ -1,0 +1,32 @@
+@import url('https://fonts.cdnfonts.com/css/public-pixel');
+.card-container {
+    /* width: 25%; */
+    /* height: 20%; */
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Public Pixel', sans-serif;
+    /* margin: 5%; */
+}
+
+.sprite {
+    width: 50%
+}
+
+.card-title {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.card-id {
+    position:relative;
+    bottom: 0px;
+    font-size: 12px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.card-name {
+    font-size: medium
+}
