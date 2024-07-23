@@ -54,10 +54,12 @@ const createGridController = (page, pageSetter, maxPage = 30) => {
 };
 
 function Pokegrid({ start = false }) {
+  const [visReady, setVisReady] = useState(false);
   const [dataReady, setDataReady] = useState(false);
 
   const [pokemonDict, setPokemonDict] = useState({});
   const [pokemonToGet, setPokemonToGet] = useState(30);
+  const [visiblePokemon, setVisiblePokemon] = useState([]);
   const [lastId, setLastId] = useState(1);
 
   const [page, setPage] = useState(0);
@@ -65,6 +67,7 @@ function Pokegrid({ start = false }) {
   // update filters
   useEffect(() => {
     const pokeCount = Object.keys(pokemonDict).length;
+    setVisReady(false);
     if ((page + 1) * 30 > pokeCount) {
       setDataReady(false);
       setPokemonToGet(30);
@@ -76,30 +79,40 @@ function Pokegrid({ start = false }) {
   useEffect(() => {
     if (pokemonToGet > 0) {
       console.log("fetching pokemon");
-    var dict = pokemonDict;
+      var dict = pokemonDict;
       var promiseList = [...Array(pokemonToGet).keys()].map((x) => {
         return axios.get(POKEMON_API + `/${lastId + x}`);
       });
       Promise.all(promiseList).then((responseList) => {
         responseList.forEach((res) => {
           dict[res.data.name] = res.data;
-      });
+        });
         console.log("pokemon fetching succeded");
-    setPokemonDict(dict);
+        setPokemonDict(dict);
         setLastId(lastId + responseList.length);
         setPokemonToGet(pokemonToGet - responseList.length);
-    setDataReady(true);
+        setDataReady(true);
       });
     } else {
       setDataReady(true);
     }
   }, [dataReady]);
+
+  // update visible pokemon
+  useEffect(() => {
+    const pokeList = Object.keys(pokemonDict);
+    // filtrar y dividir arreglo de pokemons
+    console.log("alos", pokeList);
+    setVisiblePokemon(pokeList.slice(page * 30, (page + 1) * 30));
+    setVisReady(true);
+  }, [dataReady]);
+
   if (start) {
     return (
       <div className="grid-wrapper">
         {createGridController(page, setPage)}
-        {dataReady ? (
-          createGrid(Object.keys(pokemonDict), pokemonDict)
+        {visReady ? (
+          createGrid(visiblePokemon, pokemonDict)
         ) : (
           <div className="loading">
             cargando pokemon...
