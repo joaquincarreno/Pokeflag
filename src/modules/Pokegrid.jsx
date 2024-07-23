@@ -6,6 +6,8 @@ import PokeCard from "./PokeCard";
 
 const POKEAPI = "https://pokeapi.co/api/v2/";
 const POKEMON_API = POKEAPI + "pokemon";
+const POKEBALL_SPRITE_URL =
+  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
 
 const createGrid = (pokeList, data) => {
   const rowSize = 3;
@@ -31,11 +33,14 @@ const createGrid = (pokeList, data) => {
 };
 
 
-function Pokegrid({ start = true }) {
+function Pokegrid({ start = false }) {
+  const [dataReady, setDataReady] = useState(false);
+
   const [pokemonDict, setPokemonDict] = useState({});
   const [pokemonToGet, setPokemonToGet] = useState(30);
   const [lastId, setLastId] = useState(1);
 
+  // get pokemon from the API
   useEffect(() => {
     var dict = pokemonDict;
     for (let i = 0; i < pokemonToGet; i++) {
@@ -47,13 +52,21 @@ function Pokegrid({ start = true }) {
     setPokemonDict(dict);
     setLastId(lastId + pokemonToGet);
     setPokemonToGet(0);
+    setDataReady(true);
   }, []);
 
   console.log(Object.keys(pokemonDict));
   if (start) {
     return (
       <div className="grid-wrapper">
-        {createGrid(Object.keys(pokemonDict), pokemonDict)}
+        {dataReady ? (
+          createGrid(Object.keys(pokemonDict), pokemonDict)
+        ) : (
+          <div className="loading">
+            cargando pokemon...
+            <img src={POKEBALL_SPRITE_URL} className="rotating-pokeball" />
+          </div>
+        )}
       </div>
     );
   } else {
