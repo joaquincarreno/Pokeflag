@@ -21,9 +21,9 @@ const createGrid = (pokeList, data) => {
     <div className="grid-container">
       {rows.map((row, i) => {
         return (
-          <div className="grid-row">
+          <div key={i} className="grid-row">
             {row.map((pokemon, j) => (
-              <PokeCard pokemon={data[pokemon]} />
+              <PokeCard key={j} pokemon={data[pokemon]} />
             ))}
           </div>
         );
