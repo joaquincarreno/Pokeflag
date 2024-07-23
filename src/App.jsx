@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Map from "./modules/Map";
+import PokeGlobe from "./modules/PokeGlobe";
 import Pokegrid from "./modules/Pokegrid";
 import axios from "axios";
 
@@ -16,7 +16,7 @@ function App() {
           Start
         </button>
       )}
-      <Map maxPokemon={maxPokemon} />
+      <PokeGlobe maxPokemon={maxPokemon} />
     </div>
   );
 }

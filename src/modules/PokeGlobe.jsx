@@ -27,7 +27,7 @@ import { _GlobeView as GlobeView } from "deck.gl";
 //   }, intervalMS);
 //   return () => clearInterval(interval);
 // }, []);
-function Map({ maxPokemon = 0 }) {
+function PokeGlobe({ maxPokemon = 0 }) {
   const [iconLayerData, setIconLayerData] = useState([]);
 
   useEffect(() => {
@@ -93,4 +93,4 @@ function Map({ maxPokemon = 0 }) {
     />
   );
 }
-export default Map;
+export default PokeGlobe;
