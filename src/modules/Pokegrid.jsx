@@ -44,7 +44,9 @@ const createGridController = (
   pageSetter,
   maxPage = 30,
   textFilter,
-  textFilterSetter
+  textFilterSetter,
+  showFavourites,
+  setShowFavourites
 ) => {
   return (
     <div className="grid-controller">
@@ -61,6 +63,23 @@ const createGridController = (
         value={textFilter}
         onInput={(e) => textFilterSetter(e.target.value)}
       />
+      {showFavourites ? (
+        <button
+          onClick={() => {
+            setShowFavourites(false);
+          }}
+        >
+          &#x1F496;
+        </button>
+      ) : (
+        <button
+          onClick={() => {
+            setShowFavourites(true);
+          }}
+        >
+          &#x1F5A4;
+        </button>
+      )}
       <button
         onClick={() => {
           page < maxPage
@@ -90,13 +109,30 @@ function Pokegrid({ maxPokemonId }) {
   const [textFilter, setTextFilter] = useState("");
 
   const [favourites, setFavourites] = useState([]);
+  const [showFavourites, setShowFavourites] = useState(false);
 
   const checkFav = (pokemon) => {
     return favourites.includes(pokemon);
   };
   const addFav = (pokemon) => {
     const newFav = favourites;
-    newFav.push(pokemon);
+    if (favourites.length) {
+      let keep = true;
+      let i = 0;
+      while (keep && i < favourites.length) {
+        console.log(i);
+        if (favourites[i].id > pokemon.id) {
+          // tiene id mayor, aquí va
+          keep = false;
+        } else {
+          // id menor, sigue buscando
+          i += 1;
+        }
+      }
+      newFav.splice(i, 0, pokemon);
+    } else {
+      newFav.push(pokemon);
+    }
     // console.log(newFav);
     setFavourites(newFav);
   };
@@ -109,7 +145,6 @@ function Pokegrid({ maxPokemonId }) {
     setFavourites(newFav);
   };
 
-  console.log(favourites);
   // if textfilter changes, go to page 0
   useEffect(() => {
     setPage(0);
@@ -191,7 +226,9 @@ function Pokegrid({ maxPokemonId }) {
       {createGridController(
         page,
         setPage,
-        textFilter && Object.keys(pokemonDict).length == maxPokemonId - 1
+        showFavourites
+          ? favourites.length
+          : textFilter && Object.keys(pokemonDict).length == maxPokemonId - 1
           ? Math.ceil(
               Object.keys(pokemonDict).filter((name) =>
                 name.includes(textFilter)
@@ -199,10 +236,17 @@ function Pokegrid({ maxPokemonId }) {
             ) - 1
           : Math.ceil(maxPokemonId / 30) - 1,
         textFilter,
-        setTextFilter
+        setTextFilter,
+        showFavourites,
+        setShowFavourites
       )}
       {visReady ? (
-        createGrid(filteredPokemon, pokemonDict, setSelectedPokemon, page + 1)
+        createGrid(
+          showFavourites ? Object.keys(favourites) : filteredPokemon,
+          showFavourites ? favourites : pokemonDict,
+          setSelectedPokemon,
+          page + 1
+        )
       ) : (
         <div className="loading">
           cargando pokemon...

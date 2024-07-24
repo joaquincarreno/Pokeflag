@@ -129,7 +129,7 @@ function PokedexEntry({
           </div>
           <div>
             {flip ? (
-              <button onClick={() => setFlip(!flip)}>
+              <button className="pixel-font" onClick={() => setFlip(!flip)}>
                 &#9205;
               </button>
             ) : (
