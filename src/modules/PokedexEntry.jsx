@@ -32,6 +32,7 @@ function PokedexEntry({ pokedata, setter }) {
   const [descriptions, setDescriptions] = useState(null);
   const cry = new Audio(pokedata.cries.latest);
   const [currDescription, setCurrDescription] = useState(0);
+  const [flip, setFlip] = useState(false);
   cry.volume = 0.1;
 
   useEffect(() => {
@@ -52,8 +53,20 @@ function PokedexEntry({ pokedata, setter }) {
   return descriptions ? (
     <div className="entry-container">
       <div className="top-half">
-        <div onClick={() => cry.play()} className="sprite-container">
-          <img style={{ width: "100%" }} src={pokedata.sprites.front_default} />
+        <div className="sprite-container">
+          <button className="flip-button" onClick={() => setFlip(!flip)}>
+            ↻
+          </button>
+          {/* <div onClick={() => cry.play()} style={{ top: "0" }}> */}
+            <img
+              style={{ width: "100%" }}
+              src={
+                flip
+                  ? pokedata.sprites.back_default
+                  : pokedata.sprites.front_default
+              }
+            />
+          </div>
         </div>
         <div className="data-container">
           <div className="name">

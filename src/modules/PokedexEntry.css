@@ -46,6 +46,10 @@
     align-items: center;
 }
 
+.flip-button {
+    position: absolute;
+}
+
 .sprite-container {
     flex-grow: 1;
     background-image: radial-gradient(rgba(240, 240, 240, 0.3), rgba(40, 40, 40, 0.0) 70%)
