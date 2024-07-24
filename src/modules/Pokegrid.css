@@ -10,6 +10,7 @@
     height: 85%;
     background-color: rgba(40, 40, 40, 0.8);
     font-family: 'Public Pixel', sans-serif;
+    border-radius: 3%;
     display: flex;
     flex-flow: column nowrap;
 }
@@ -35,4 +36,5 @@
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-around;
+    padding: 1%;
 }

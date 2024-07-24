@@ -46,7 +46,6 @@ function PokedexEntry({ pokedata, setter }) {
         }
       });
       setDescriptions(unrepeated);
-      console.log("setted");
     });
   }, []);
 
@@ -69,7 +68,10 @@ function PokedexEntry({ pokedata, setter }) {
           </div>
           <div className="type-container">
             {pokedata.types.map((t, i) => (
-              <div style={{ backgroundColor: colours[t.type.name] }}>
+              <div
+                className="type"
+                style={{ backgroundColor: colours[t.type.name] }}
+              >
                 {t.type.name}
               </div>
             ))}
@@ -87,7 +89,7 @@ function PokedexEntry({ pokedata, setter }) {
         </div>
       </div>
       <div className="description-container">
-        {descriptions[currDescription]}
+        <div className="description-text">{descriptions[currDescription]}</div>
         <div className="description-buttons">
           <div>
             <button onClick={() => setter(null)}>X</button>
