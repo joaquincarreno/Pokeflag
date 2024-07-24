@@ -25,6 +25,8 @@
 
 .description-text {
     overflow-y: auto;
+    white-space: normal;
+    max-height: 135px;
     flex-grow: 1;
     font-size: 1.25em;
 }
@@ -56,6 +58,7 @@
 
 .flip-button {
     position: absolute;
+    background-color: rgba(40, 40, 40, 0);
 }
 
 .sprite-container {
@@ -69,17 +72,18 @@
     align-items: center;
     justify-content: space-evenly;
     flex-grow: 1;
-    height: 60%;
+    height: 100%;
 }
 
 .name {
-    /* font-size: 50px; */
-    font-size: 2.5em;
+    font-size: 1.8em;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
     gap: 5%;
+    max-width: 350px;
 }
+
 
 .id {
     display: flex;

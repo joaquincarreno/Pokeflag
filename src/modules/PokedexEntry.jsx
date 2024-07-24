@@ -82,7 +82,7 @@ function PokedexEntry({ pokedata, setter }) {
               {pokedata.id < 10 && "0"}
               {pokedata.id}
             </div>
-            <div>{pokedata.name.toUpperCase()}</div>
+            <p>{pokedata.name.toUpperCase()}</p>
           </div>
           <div className="type-container">
             {pokedata.types.map((t, i) => (
