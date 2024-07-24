@@ -1,6 +1,6 @@
+NPM = npm run
 
-dependencies:
-	npm i
-
-start:
-	npm run dev
+local:
+	$(NPM) dev
+net:
+	$(NPM) host
