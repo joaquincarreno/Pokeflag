@@ -46,7 +46,6 @@ function PokedexEntry({ pokedata, setter }) {
         }
       });
       setDescriptions(unrepeated);
-      readySetter(true);
       console.log("setted");
     });
   }, []);
@@ -117,9 +116,11 @@ function PokedexEntry({ pokedata, setter }) {
       </div>
     </div>
   ) : (
-    <div className="loading">
-      cargando pokemon...
-      <img src={POKEBALL_SPRITE_URL} className="rotating-pokeball" />
+    <div className="entry-container">
+      <div className="loading">
+        cargando pokemon...
+        <img src={POKEBALL_SPRITE_URL} className="rotating-pokeball" />
+      </div>
     </div>
   );
 }
