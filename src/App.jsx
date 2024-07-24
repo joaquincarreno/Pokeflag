@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import PokeGlobe from "./modules/PokeGlobe";
 import Pokegrid from "./modules/Pokegrid";
-import axios from "axios";
 
+const maxPokemon = 1025;
 function App() {
   const [start, setStart] = useState(false);
-  const maxPokemon = 1025;
 
   return (
     <div className="app-container">
@@ -17,7 +16,7 @@ function App() {
           Start
         </button>
       )}
-      <PokeGlobe maxPokemon={maxPokemon} />
+      <PokeGlobe started={start} maxPokemon={maxPokemon} />
     </div>
   );
 }
