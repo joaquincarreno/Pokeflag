@@ -9,7 +9,7 @@ import { _GlobeView as GlobeView } from "deck.gl";
 
 const shinnyChance = 0.012;
 
-const intervalMS = 50;
+const intervalMS = 10;
 const step = 1;
 
 function PokeGlobe({ maxPokemon = 0, started = false }) {
@@ -65,7 +65,7 @@ function PokeGlobe({ maxPokemon = 0, started = false }) {
   // rotation
   useEffect(() => {
     if (started) {
-      setLongitude(longitude + 0.3);
+      setLongitude(longitude + 0.25);
     }
   }, [time]);
 
