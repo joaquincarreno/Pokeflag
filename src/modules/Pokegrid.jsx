@@ -97,7 +97,7 @@ function Pokegrid({ maxPokemonId }) {
     // if page not filled and more pokemon available
     if (pokeCount < (page + 1) * 30 && lastId < maxPokemonId) {
       console.log("gimme more pokemon");
-    setVisReady(false);
+      setVisReady(false);
       setDataReady(false);
       setPokemonToGet(30);
     } else {
@@ -121,11 +121,11 @@ function Pokegrid({ maxPokemonId }) {
       console.log("fetching", pokemonToGet, "pokemon");
       Promise.all(promiseList)
         .then((responseList) => {
-        responseList.forEach((res) => {
-          dict[res.data.name] = res.data;
-        });
-        setPokemonDict(dict);
-        setLastId(lastId + responseList.length);
+          responseList.forEach((res) => {
+            dict[res.data.name] = res.data;
+          });
+          setPokemonDict(dict);
+          setLastId(lastId + responseList.length);
           setPokemonToGet(0);
           console.log("succeded fetching pokemon");
         })
@@ -144,37 +144,33 @@ function Pokegrid({ maxPokemonId }) {
         .slice(page * 30, (page + 1) * 30);
       console.log("filtered", filtered.length, "pokemon");
       setFilteredPokemon(filtered);
-    setVisReady(true);
+      setVisReady(true);
     } else {
       console.log("data was not ready");
       setFilteredPokemon([]);
     }
   }, [dataReady, page, textFilter]);
 
-  if (start) {
-    return selectedPokemon ? (
-      <PokedexEntry pokedata={selectedPokemon} setter={setSelectedPokemon} />
-    ) : (
-      <div className="grid-wrapper">
-        {createGridController(
-          page,
-          setPage,
-          Math.ceil(1000 / 3),
-          textFilter,
-          setTextFilter
-        )}
-        {visReady ? (
+  return selectedPokemon ? (
+    <PokedexEntry pokedata={selectedPokemon} setter={setSelectedPokemon} />
+  ) : (
+    <div className="grid-wrapper">
+      {createGridController(
+        page,
+        setPage,
+        Math.ceil(1000 / 3),
+        textFilter,
+        setTextFilter
+      )}
+      {visReady ? (
         createGrid(filteredPokemon, pokemonDict, setSelectedPokemon)
-        ) : (
-          <div className="loading">
-            cargando pokemon...
-            <img src={POKEBALL_SPRITE_URL} className="rotating-pokeball" />
-          </div>
-        )}
-      </div>
-    );
-  } else {
-    return <></>;
-  }
+      ) : (
+        <div className="loading">
+          cargando pokemon...
+          <img src={POKEBALL_SPRITE_URL} className="rotating-pokeball" />
+        </div>
+      )}
+    </div>
+  );
 }
 export default Pokegrid;

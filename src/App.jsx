@@ -10,8 +10,9 @@ function App() {
 
   return (
     <div className="app-container">
-      <Pokegrid start={start} />
-      {!start && (
+      {start ? (
+        <Pokegrid maxPokemonId={maxPokemon} />
+      ) : (
         <button className="start-button" onClick={() => setStart(true)}>
           Start
         </button>
