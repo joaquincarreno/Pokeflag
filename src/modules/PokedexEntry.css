@@ -40,12 +40,15 @@
 }
 
 .description-buttons {
-    height: 15%;
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-end;
     justify-content: space-between;
     padding: 2%;
+}
+
+.pixel-font {
+    font-family: 'Public Pixel', sans-serif;
 }
 
 .top-half {

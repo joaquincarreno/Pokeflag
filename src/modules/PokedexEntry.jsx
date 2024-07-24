@@ -28,13 +28,26 @@ const colours = {
   stellar: "40B5A5",
 };
 
-function PokedexEntry({ pokedata, setter }) {
+function PokedexEntry({
+  pokedata,
+  setter,
+  addFav = () => {},
+  removeFav = () => {},
+  favs = [],
+}) {
   const [descriptions, setDescriptions] = useState(null);
   const cry = new Audio(pokedata.cries.latest);
   const [descriptionIndex, setDescriptionIndex] = useState(0);
   const [currDescription, setCurrDescription] = useState("");
   const [flip, setFlip] = useState(false);
   cry.volume = 0.1;
+
+  const [isFav, setIsFav] = useState(favs.includes(pokedata));
+  const [updater, setUpdater] = useState(0);
+
+  useEffect(() => {
+    setIsFav(favs.includes(pokedata));
+  }, [updater]);
 
   useEffect(() => {
     axios.get(pokedata.species.url).then((response) => {
@@ -54,14 +67,10 @@ function PokedexEntry({ pokedata, setter }) {
       setCurrDescription(Object.keys(unrepeated)[0]);
     });
   }, []);
-
   return descriptions ? (
     <div className="entry-container">
       <div className="top-half">
         <div className="sprite-container">
-          <button className="flip-button" onClick={() => setFlip(!flip)}>
-            ↻
-          </button>
           <div onClick={() => cry.play()} style={{ top: "0" }}>
             <img
               style={{ width: "100%" }}
@@ -117,6 +126,36 @@ function PokedexEntry({ pokedata, setter }) {
         <div className="description-buttons">
           <div>
             <button onClick={() => setter(null)}>X</button>
+          </div>
+          <div>
+            {flip ? (
+              <button onClick={() => setFlip(!flip)}>
+                &#9205;
+              </button>
+            ) : (
+              <button onClick={() => setFlip(!flip)}>
+                &#9204;
+              </button>
+            )}
+            {isFav ? (
+              <button
+                onClick={() => {
+                  setUpdater(updater + 1);
+                  removeFav(pokedata);
+                }}
+              >
+                &#x1F496;
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  setUpdater(updater + 1);
+                  addFav(pokedata);
+                }}
+              >
+                &#x1F5A4;
+              </button>
+            )}
           </div>
           <div>
             <button

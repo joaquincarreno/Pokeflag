@@ -89,6 +89,27 @@ function Pokegrid({ maxPokemonId }) {
   const [page, setPage] = useState(0);
   const [textFilter, setTextFilter] = useState("");
 
+  const [favourites, setFavourites] = useState([]);
+
+  const checkFav = (pokemon) => {
+    return favourites.includes(pokemon);
+  };
+  const addFav = (pokemon) => {
+    const newFav = favourites;
+    newFav.push(pokemon);
+    // console.log(newFav);
+    setFavourites(newFav);
+  };
+  const removeFav = (pokemon) => {
+    const newFav = favourites;
+    const index = favourites.indexOf(pokemon);
+    newFav.splice(index, 1);
+    // console.log(index);
+    // console.log(newFav);
+    setFavourites(newFav);
+  };
+
+  console.log(favourites);
   // if textfilter changes, go to page 0
   useEffect(() => {
     setPage(0);
@@ -158,7 +179,13 @@ function Pokegrid({ maxPokemonId }) {
   }, [dataReady, page, textFilter]);
 
   return selectedPokemon ? (
-    <PokedexEntry pokedata={selectedPokemon} setter={setSelectedPokemon} />
+    <PokedexEntry
+      pokedata={selectedPokemon}
+      setter={setSelectedPokemon}
+      addFav={addFav}
+      removeFav={removeFav}
+      favs={favourites}
+    />
   ) : (
     <div className="grid-wrapper">
       {createGridController(
