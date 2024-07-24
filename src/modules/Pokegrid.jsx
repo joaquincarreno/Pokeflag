@@ -50,7 +50,7 @@ const createGridController = (
     <div className="grid-controller">
       <button
         onClick={() => {
-          page > 0 && pageSetter(page - 1);
+          page > 0 ? pageSetter(page - 1) : alert("This is the first page!");
         }}
       >
         {"<"}
@@ -65,7 +65,7 @@ const createGridController = (
         onClick={() => {
           page < maxPage
             ? pageSetter(page + 1)
-            : alert("no more pokemon to display :(");
+            : alert("No more pokemon to display D: (for now...)");
         }}
       >
         {">"}
@@ -164,8 +164,12 @@ function Pokegrid({ maxPokemonId }) {
       {createGridController(
         page,
         setPage,
-        textFilter
-          ? Math.ceil(filteredPokemon.length / 30) - 1
+        textFilter && Object.keys(pokemonDict).length == maxPokemonId - 1
+          ? Math.ceil(
+              Object.keys(pokemonDict).filter((name) =>
+                name.includes(textFilter)
+              ).length / 30
+            ) - 1
           : Math.ceil(maxPokemonId / 30) - 1,
         textFilter,
         setTextFilter
