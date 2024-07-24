@@ -1,29 +1,34 @@
 import { useState, useEffect } from "react";
 
 import "./Pokegrid.css";
+import "./RotatingAnimation.css";
 import axios from "axios";
 import PokeCard from "./PokeCard";
+import PokedexEntry from "./PokedexEntry";
 
 const POKEAPI = "https://pokeapi.co/api/v2/";
 const POKEMON_API = POKEAPI + "pokemon";
 const POKEBALL_SPRITE_URL =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
 
-const createGrid = (pokeList, data) => {
+const createGrid = (pokeList, data, pokemonSetter) => {
   const rowSize = 3;
   // const nRows = 10;
   const nRows = Math.ceil(pokeList.length / rowSize);
   const rows = Array.from({ length: nRows }, (v, i) =>
     pokeList.slice(i * rowSize, i * rowSize + rowSize)
   );
-
   return (
     <div className="grid-container">
       {rows.map((row, i) => {
         return (
           <div key={i} className="grid-row">
             {row.map((pokemon, j) => (
-              <PokeCard key={j} pokemon={data[pokemon]} />
+              <PokeCard
+                key={j}
+                setter={pokemonSetter}
+                pokemon={data[pokemon]}
+              />
             ))}
           </div>
         );
@@ -72,6 +77,8 @@ function Pokegrid({ start = false }) {
   const [filteredPokemon, setFileteredPokemon] = useState([]);
   const [visiblePokemon, setVisiblePokemon] = useState([]);
   const [lastId, setLastId] = useState(1);
+
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
 
   const [page, setPage] = useState(0);
   const [textFilter, setTextFilter] = useState("");
@@ -130,7 +137,9 @@ function Pokegrid({ start = false }) {
   }, [dataReady]);
 
   if (start) {
-    return (
+    return selectedPokemon ? (
+      <PokedexEntry pokedata={selectedPokemon} setter={setSelectedPokemon} />
+    ) : (
       <div className="grid-wrapper">
         {createGridController(
           page,
@@ -140,7 +149,7 @@ function Pokegrid({ start = false }) {
           setTextFilter
         )}
         {visReady ? (
-          createGrid(visiblePokemon, pokemonDict)
+          createGrid(visiblePokemon, pokemonDict, setSelectedPokemon)
         ) : (
           <div className="loading">
             cargando pokemon...
