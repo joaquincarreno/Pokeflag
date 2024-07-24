@@ -31,7 +31,8 @@ const colours = {
 function PokedexEntry({ pokedata, setter }) {
   const [descriptions, setDescriptions] = useState(null);
   const cry = new Audio(pokedata.cries.latest);
-  const [currDescription, setCurrDescription] = useState(0);
+  const [descriptionIndex, setDescriptionIndex] = useState(0);
+  const [currDescription, setCurrDescription] = useState("");
   const [flip, setFlip] = useState(false);
   cry.volume = 0.1;
 
@@ -40,13 +41,17 @@ function PokedexEntry({ pokedata, setter }) {
       const filtered = response.data.flavor_text_entries.filter(
         (entry) => entry.language.name == "en"
       );
-      let unrepeated = [];
+      let unrepeated = {};
       filtered.forEach((e) => {
-        if (!unrepeated.includes(e.flavor_text.replace("\f", "\n"))) {
-          unrepeated.push(e.flavor_text.replace("\f", "\n"));
+        const formatedText = e.flavor_text.replace("\f", "\n");
+        if (unrepeated[formatedText]) {
+          unrepeated[formatedText].push(e.version.name);
+        } else {
+          unrepeated[formatedText] = [e.version.name];
         }
       });
       setDescriptions(unrepeated);
+      setCurrDescription(Object.keys(unrepeated)[0]);
     });
   }, []);
 
@@ -57,7 +62,7 @@ function PokedexEntry({ pokedata, setter }) {
           <button className="flip-button" onClick={() => setFlip(!flip)}>
             ↻
           </button>
-          {/* <div onClick={() => cry.play()} style={{ top: "0" }}> */}
+          <div onClick={() => cry.play()} style={{ top: "0" }}>
             <img
               style={{ width: "100%" }}
               src={
@@ -82,6 +87,7 @@ function PokedexEntry({ pokedata, setter }) {
           <div className="type-container">
             {pokedata.types.map((t, i) => (
               <div
+                key={i}
                 className="type"
                 style={{ backgroundColor: colours[t.type.name] }}
               >
@@ -102,27 +108,37 @@ function PokedexEntry({ pokedata, setter }) {
         </div>
       </div>
       <div className="description-container">
-        <div className="description-text">{descriptions[currDescription]}</div>
+        <div className="description-text">{currDescription}</div>
+        <div className="description-origin">
+          {descriptions[currDescription].map((game, i) => {
+            return <div key={i}>{game}</div>;
+          })}
+        </div>
         <div className="description-buttons">
           <div>
             <button onClick={() => setter(null)}>X</button>
           </div>
           <div>
             <button
-              onClick={() =>
-                setCurrDescription(
-                  currDescription == 0
-                    ? descriptions.length - 1
-                    : currDescription - 1
-                )
-              }
+              onClick={() => {
+                const texts = Object.keys(descriptions);
+                const newIndex =
+                  (descriptionIndex + texts.length - 1) % texts.length;
+                const text = texts[newIndex];
+                setCurrDescription(text);
+                setDescriptionIndex(newIndex);
+              }}
             >
               {"<"}
             </button>
             <button
-              onClick={() =>
-                setCurrDescription((currDescription + 1) % descriptions.length)
-              }
+              onClick={() => {
+                const texts = Object.keys(descriptions);
+                const newIndex = (descriptionIndex + 1) % texts.length;
+                const text = texts[newIndex];
+                setCurrDescription(text);
+                setDescriptionIndex(newIndex);
+              }}
             >
               {">"}
             </button>

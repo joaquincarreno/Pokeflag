@@ -29,6 +29,14 @@
     font-size: 1.25em;
 }
 
+.description-origin {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    color: rgba(240, 240, 240, 0.45)
+}
+
 .description-buttons {
     height: 15%;
     display: flex;

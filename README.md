@@ -6,7 +6,7 @@ En el Landing Page hay un globo del planeta con Icónos de Pokemones aleatoreos,
 
 Al hacer click en el botón de start la grilla con la lista de Pokemon se hace visible. Se puede avanzar en las páginas mediante botones y filtrar los Pokemon según su nombre.
 
-Al hacer click en un Pokemon se puede acceder a su entrada Pokedex, donde se puede ver su información y escuchar su grito al hacer click en su sprite. Se puede voltear Pokemon con el botón que se superpone al sprite. Se pueden ver las distintas descripciones del pokemón alternando con las flechas.
+Al hacer click en un Pokemon se puede acceder a su entrada Pokedex, donde se puede ver su información y escuchar su grito al hacer click en su sprite. Se puede voltear Pokemon con el botón que se superpone al sprite. Se pueden ver las distintas descripciones del pokemón a través de los juegos (indicando su origen en el texto transparente) con las flechas.
 
 ## Instalación
 
