@@ -68,14 +68,14 @@ const createGridController = (
   );
 };
 
-function Pokegrid({ start = false }) {
+function Pokegrid({ maxPokemonId }) {
   const [visReady, setVisReady] = useState(false);
   const [dataReady, setDataReady] = useState(false);
 
   const [pokemonDict, setPokemonDict] = useState({});
   const [pokemonToGet, setPokemonToGet] = useState(30);
-  const [filteredPokemon, setFileteredPokemon] = useState([]);
-  const [visiblePokemon, setVisiblePokemon] = useState([]);
+
+  const [filteredPokemon, setFilteredPokemon] = useState([]);
   const [lastId, setLastId] = useState(1);
 
   const [selectedPokemon, setSelectedPokemon] = useState(null);
@@ -83,59 +83,73 @@ function Pokegrid({ start = false }) {
   const [page, setPage] = useState(0);
   const [textFilter, setTextFilter] = useState("");
 
-  // update filter
+  // if textfilter changes, go to page 0
   useEffect(() => {
-    const filtered = Object.keys(pokemonDict).filter((name) =>
-      name.includes(textFilter)
-    );
-    console.log(filtered);
-    setFileteredPokemon(filtered);
-  }, [textFilter, dataReady]);
+    setPage(0);
+  }, [textFilter]);
 
-  // update page
+  // check if more pokemon are needed
   useEffect(() => {
-    const pokeCount = Object.keys(pokemonDict).length;
+    console.log("page:", page, "filter:", textFilter);
+    const pokeCount = Object.keys(pokemonDict).filter((name) =>
+      name.includes(textFilter)
+    ).length;
+    // if page not filled and more pokemon available
+    if (pokeCount < (page + 1) * 30 && lastId < maxPokemonId) {
+      console.log("gimme more pokemon");
     setVisReady(false);
-    console.log("efecto");
-    if ((page + 1) * 30 > pokeCount) {
       setDataReady(false);
       setPokemonToGet(30);
+    } else {
+      console.log("it's enough pokemon");
+      setDataReady(true);
     }
-    // console.log(page);
-  }, [page]);
+  }, [page, lastId, textFilter]);
 
-  // get pokemon from the API
+  // fetch pokemon from the API
   useEffect(() => {
+    console.log("need to get", pokemonToGet, "more pokemon");
     if (pokemonToGet > 0) {
-      console.log("fetching pokemon");
-      var dict = pokemonDict;
-      var promiseList = [...Array(pokemonToGet).keys()].map((x) => {
-        return axios.get(POKEMON_API + `/${lastId + x}`);
+      const dict = pokemonDict;
+      const idsToGet = [...Array(pokemonToGet).keys()]
+        .map((x) => x + lastId)
+        .filter((id) => id < maxPokemonId);
+
+      const promiseList = idsToGet.map((x) => {
+        return axios.get(POKEMON_API + `/${x}`);
       });
-      Promise.all(promiseList).then((responseList) => {
+      console.log("fetching", pokemonToGet, "pokemon");
+      Promise.all(promiseList)
+        .then((responseList) => {
         responseList.forEach((res) => {
           dict[res.data.name] = res.data;
         });
-        console.log("pokemon fetching succeded");
         setPokemonDict(dict);
         setLastId(lastId + responseList.length);
-        setPokemonToGet(pokemonToGet - responseList.length);
-        setDataReady(true);
-      });
-    } else {
-      setDataReady(true);
+          setPokemonToGet(0);
+          console.log("succeded fetching pokemon");
+        })
+        .catch(() => {
+          console.log("failed to fetch pokemon");
+        });
     }
-  }, [dataReady]);
+  }, [pokemonToGet]);
 
-  // update visible pokemon
+  // if data is ready, update filtered
   useEffect(() => {
-    const pokeList = Object.keys(pokemonDict);
-    // filtrar y dividir arreglo de pokemons
-    // console.log("alos", pokeList);
-    setVisiblePokemon(pokeList.slice(page * 30, (page + 1) * 30));
+    if (dataReady) {
+      console.log("data was ready");
+      const filtered = Object.keys(pokemonDict)
+        .filter((name) => name.includes(textFilter))
+        .slice(page * 30, (page + 1) * 30);
+      console.log("filtered", filtered.length, "pokemon");
+      setFilteredPokemon(filtered);
     setVisReady(true);
-    console.log("updated visible pokemon");
-  }, [dataReady, page]);
+    } else {
+      console.log("data was not ready");
+      setFilteredPokemon([]);
+    }
+  }, [dataReady, page, textFilter]);
 
   if (start) {
     return selectedPokemon ? (
@@ -150,7 +164,7 @@ function Pokegrid({ start = false }) {
           setTextFilter
         )}
         {visReady ? (
-          createGrid(visiblePokemon, pokemonDict, setSelectedPokemon)
+        createGrid(filteredPokemon, pokemonDict, setSelectedPokemon)
         ) : (
           <div className="loading">
             cargando pokemon...
