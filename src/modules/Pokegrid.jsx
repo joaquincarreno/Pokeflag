@@ -11,7 +11,7 @@ const POKEMON_API = POKEAPI + "pokemon";
 const POKEBALL_SPRITE_URL =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
 
-const createGrid = (pokeList, data, pokemonSetter) => {
+const createGrid = (pokeList, data, pokemonSetter, currPage) => {
   const rowSize = 3;
   // const nRows = 10;
   const nRows = Math.ceil(pokeList.length / rowSize);
@@ -20,6 +20,7 @@ const createGrid = (pokeList, data, pokemonSetter) => {
   );
   return (
     <div className="grid-container">
+      <div className="grid-page-indicator"> page {currPage}</div>
       {rows.map((row, i) => {
         return (
           <div key={i} className="grid-row">
@@ -33,6 +34,7 @@ const createGrid = (pokeList, data, pokemonSetter) => {
           </div>
         );
       })}
+      <div className="grid-page-indicator"> page {currPage}</div>
     </div>
   );
 };
@@ -54,12 +56,16 @@ const createGridController = (
         {"<"}
       </button>
       <input
+        placeholder="Search by name"
+        style={{ textAlign: "center" }}
         value={textFilter}
         onInput={(e) => textFilterSetter(e.target.value)}
       />
       <button
         onClick={() => {
-          page < maxPage && pageSetter(page + 1);
+          page < maxPage
+            ? pageSetter(page + 1)
+            : alert("no more pokemon to display :(");
         }}
       >
         {">"}
@@ -158,12 +164,14 @@ function Pokegrid({ maxPokemonId }) {
       {createGridController(
         page,
         setPage,
-        Math.ceil(1000 / 3),
+        textFilter
+          ? Math.ceil(filteredPokemon.length / 30) - 1
+          : Math.ceil(maxPokemonId / 30) - 1,
         textFilter,
         setTextFilter
       )}
       {visReady ? (
-        createGrid(filteredPokemon, pokemonDict, setSelectedPokemon)
+        createGrid(filteredPokemon, pokemonDict, setSelectedPokemon, page + 1)
       ) : (
         <div className="loading">
           cargando pokemon...

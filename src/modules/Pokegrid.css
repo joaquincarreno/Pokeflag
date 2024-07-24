@@ -31,6 +31,12 @@
     width: 100%;
     /* height: 20%; */
 }
+.grid-page-indicator {
+    /* width: 100%; */
+    text-align: center;
+    margin: 1%;
+    color: rgba(255, 255, 255, 0.3);
+}
 
 .grid-controller {
     display: flex;

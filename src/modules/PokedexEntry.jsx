@@ -32,7 +32,7 @@ function PokedexEntry({ pokedata, setter }) {
   const [descriptions, setDescriptions] = useState(null);
   const cry = new Audio(pokedata.cries.latest);
   const [currDescription, setCurrDescription] = useState(0);
-  cry.volume = 0.05;
+  cry.volume = 0.1;
 
   useEffect(() => {
     axios.get(pokedata.species.url).then((response) => {
