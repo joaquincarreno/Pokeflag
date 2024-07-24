@@ -96,6 +96,7 @@ function Pokegrid({ start = false }) {
   useEffect(() => {
     const pokeCount = Object.keys(pokemonDict).length;
     setVisReady(false);
+    console.log("efecto");
     if ((page + 1) * 30 > pokeCount) {
       setDataReady(false);
       setPokemonToGet(30);
@@ -134,7 +135,7 @@ function Pokegrid({ start = false }) {
     setVisiblePokemon(pokeList.slice(page * 30, (page + 1) * 30));
     setVisReady(true);
     console.log("updated visible pokemon");
-  }, [dataReady]);
+  }, [dataReady, page]);
 
   if (start) {
     return selectedPokemon ? (
