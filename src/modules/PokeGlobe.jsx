@@ -33,19 +33,27 @@ function PokeGlobe({ maxPokemon = 0, started = false }) {
   useEffect(() => {
     let positions = [];
     let shinyCount = 0;
-    for (let x = 0; x <= 17; x++) {
-      for (let y = 0; y <= 35; y++) {
-        const shiny = Math.random() < shinnyChance;
-        if (shiny) {
-          shinyCount += 1;
+    const createPokemonIcon = (x, y, forceShiny = false) => {
+      const shiny = Math.random() < shinnyChance || forceShiny;
+      if (shiny) {
+        shinyCount += 1;
+        console.log(x, y);
+      }
+      positions.push({
+        x: x * 10,
+        y: y * 10,
+        z: 150,
+        id: Math.ceil(Math.random() * (maxPokemon - 1)),
+        shiny: shiny,
+      });
+    };
+    for (let y = -17; y <= 17; y++) {
+      if (y != 9 && y != -9) {
+        for (let x = 0; x <= 17; x++) {
+          createPokemonIcon(x, y);
         }
-        positions.push({
-          x: x * 10,
-          y: y * 10,
-          z: 150,
-          id: Math.ceil(Math.random() * (maxPokemon - 1)),
-          shinny: shiny,
-        });
+      } else {
+        createPokemonIcon(0, y);
       }
     }
     setIconLayerData(positions);
@@ -109,6 +117,12 @@ function PokeGlobe({ maxPokemon = 0, started = false }) {
     pickable: true,
   });
 
+  const tooltip = (object) => {
+    if (object.layer && object.layer.id == "pokemon-layer") {
+      if (object.object) return object.object.shiny ? "its shiny!" : null;
+    }
+  };
+
   return (
     <DeckGL
       views={new GlobeView({ id: "globe", controller: true })}
@@ -119,6 +133,7 @@ function PokeGlobe({ maxPokemon = 0, started = false }) {
       }}
       onViewStateChange={handleViewStateChange}
       layers={[baseMapLayer, iconLayer]}
+      getTooltip={tooltip}
       controller={!started}
     />
   );
