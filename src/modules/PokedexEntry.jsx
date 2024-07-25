@@ -6,6 +6,7 @@ import "./RotatingAnimation.css";
 const POKEBALL_SPRITE_URL =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
 
+// colors retrieved from bulbapedia.bulbagarden.net
 const games_colors = {
   red: "#DA3914",
   blue: "#2E50D8",
