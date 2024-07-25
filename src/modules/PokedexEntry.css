@@ -32,11 +32,12 @@
 }
 
 .description-origin {
+    opacity: 0.4;
     width: 100%;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-evenly;
-    color: rgba(240, 240, 240, 0.45)
+    color: rgba(240, 240, 240, 1)
 }
 
 .description-buttons {
@@ -124,3 +125,4 @@
     flex-flow: row nowrap;
     justify-content: space-between;
 }
+

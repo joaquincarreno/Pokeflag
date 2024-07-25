@@ -6,7 +6,47 @@ import "./RotatingAnimation.css";
 const POKEBALL_SPRITE_URL =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
 
-const colours = {
+const games_colors = {
+  red: "#DA3914",
+  blue: "#2E50D8",
+  yellow: "#FFD733",
+  gold: "#DAA520",
+  silver: "#C0C0C0",
+  crystal: "#4FD9FF",
+  ruby: "#CD2236",
+  sapphire: "#3D51A7",
+  emerald: "#009652",
+  firered: "#F15C01",
+  leafgreen: "#9FDC00",
+  diamond: "#90BEED",
+  pearl: "#DD7CB1",
+  platinum: "#A0A08D",
+  black: "#444444",
+  white: "#E1E1E1",
+  "black-2": "#303E51",
+  "white-2": "#EBC5C3",
+  heartgold: "#E8B502",
+  soulsilver: "#AAB9CF",
+  x: "#025DA6",
+  y: "#EA1A3E",
+  "alpha-sapphire": "#26649C",
+  "omega-ruby": "#AB2813",
+  "lets-go-eevee": "#D4924B",
+  "lets-go-pikachu": "#F5DA26",
+  sword: "#00A1E9",
+  shield: "#BF004F",
+  sun: "#F1912B",
+  moon: "#5599CA",
+  "ultra-sun": "#E95B2B",
+  "ultra-moon": "#226DB5",
+  "brilliant-diamond": "#44BAE5",
+  "shining-pearl": "#DA7D99",
+  "legends-arceus": "#36597B",
+  scarlet: "#F34134",
+  violet: "#8334B7",
+};
+
+const type_colors = {
   normal: "#A8A77A",
   fire: "#EE8130",
   water: "#6390F0",
@@ -98,7 +138,7 @@ function PokedexEntry({
               <div
                 key={i}
                 className="type"
-                style={{ backgroundColor: colours[t.type.name] }}
+                style={{ backgroundColor: type_colors[t.type.name] }}
               >
                 {t.type.name}
               </div>
@@ -120,7 +160,11 @@ function PokedexEntry({
         <div className="description-text">{currDescription}</div>
         <div className="description-origin">
           {descriptions[currDescription].map((game, i) => {
-            return <div key={i}>{game}</div>;
+            return (
+              <div key={i} style={{ backgroundColor: games_colors[game] }}>
+                {game}
+              </div>
+            );
           })}
         </div>
         <div className="description-buttons">
@@ -133,9 +177,7 @@ function PokedexEntry({
                 &#9205;
               </button>
             ) : (
-              <button onClick={() => setFlip(!flip)}>
-                &#9204;
-              </button>
+              <button onClick={() => setFlip(!flip)}>&#9204;</button>
             )}
             {isFav ? (
               <button
