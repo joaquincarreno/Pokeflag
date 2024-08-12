@@ -20,11 +20,11 @@
 
 .card-id {
     position:relative;
-    font-size: 12px;
+    font-size: 1.5vw;
     display: flex;
     align-items: flex-end;
 }
 
 .card-name {
-    font-size: medium
+    font-size: 2vw
 }
