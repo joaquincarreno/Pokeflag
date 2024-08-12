@@ -168,27 +168,27 @@ function Pokegrid({ maxPokemonId }) {
         const promiseList = res.data.results.map((entry) =>
           axios.get(entry.url)
         );
-      Promise.all(promiseList)
-        .then((responseList) => {
-          responseList.forEach((res) => {
-            dict[res.data.name] = res.data;
-          });
-          setPokemonDict(dict);
+        Promise.all(promiseList)
+          .then((responseList) => {
+            responseList.forEach((res) => {
+              dict[res.data.name] = res.data;
+            });
+            setPokemonDict(dict);
             setDataReady(true);
-          console.log("succeded fetching pokemon");
-        })
-        .catch(() => {
-          console.log("failed to fetch pokemon");
-        });
+            console.log("succeded fetching pokemon");
+          })
+          .catch(() => {
+            console.log("failed to fetch pokemon");
+          });
       });
     }
   }, [pokemonToGet]);
 
-  // if data is ready, update filtered
+  // update filtered
   useEffect(() => {
     if (dataReady) {
       console.log("data was ready");
-      const filtered = Object.keys(pokemonDict)
+      const filtered = (showFavourites ? favourites : Object.keys(pokemonDict))
         .filter((name) => name.includes(textFilter))
         .slice(page * 30, (page + 1) * 30);
       console.log("filtered", filtered.length, "pokemon");
@@ -196,9 +196,8 @@ function Pokegrid({ maxPokemonId }) {
       setVisReady(true);
     } else {
       console.log("data was not ready");
-      setFilteredPokemon([]);
     }
-  }, [dataReady, page, textFilter]);
+  }, [dataReady, page, textFilter, showFavourites, selectedPokemon]);
 
   return selectedPokemon ? (
     <PokedexEntry
@@ -228,12 +227,7 @@ function Pokegrid({ maxPokemonId }) {
         setShowFavourites
       )}
       {visReady ? (
-        createGrid(
-          showFavourites ? Object.keys(favourites) : filteredPokemon,
-          showFavourites ? favourites : pokemonDict,
-          setSelectedPokemon,
-          page + 1
-        )
+        createGrid(filteredPokemon, pokemonDict, setSelectedPokemon, page + 1)
       ) : (
         <div className="loading">
           cargando pokemon...

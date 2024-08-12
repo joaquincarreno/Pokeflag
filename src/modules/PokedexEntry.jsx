@@ -83,11 +83,11 @@ function PokedexEntry({
   const [flip, setFlip] = useState(false);
   cry.volume = 0.1;
 
-  const [isFav, setIsFav] = useState(favs.includes(pokedata));
+  const [isFav, setIsFav] = useState(favs.includes(pokedata.name));
   const [updater, setUpdater] = useState(0);
 
   useEffect(() => {
-    setIsFav(favs.includes(pokedata));
+    setIsFav(favs.includes(pokedata.name));
   }, [updater]);
 
   useEffect(() => {
@@ -184,7 +184,7 @@ function PokedexEntry({
               <button
                 onClick={() => {
                   setUpdater(updater + 1);
-                  removeFav(pokedata);
+                  removeFav(pokedata.name);
                 }}
               >
                 &#x1F496;
@@ -193,7 +193,7 @@ function PokedexEntry({
               <button
                 onClick={() => {
                   setUpdater(updater + 1);
-                  addFav(pokedata);
+                  addFav(pokedata.name);
                 }}
               >
                 &#x1F5A4;
