@@ -150,50 +150,37 @@ function Pokegrid({ maxPokemonId }) {
     setPage(0);
   }, [textFilter]);
 
-  // check if more pokemon are needed
+  // fetch pokemon count from the API
   useEffect(() => {
-    console.log("page:", page, "filter:", textFilter);
-    const pokeCount = Object.keys(pokemonDict).filter((name) =>
-      name.includes(textFilter)
-    ).length;
-    // if page not filled and more pokemon available
-    if (pokeCount < (page + 1) * 30 && lastId < maxPokemonId) {
-      console.log("gimme more pokemon");
-      setVisReady(false);
-      setDataReady(false);
-      setPokemonToGet(30);
-    } else {
-      console.log("it's enough pokemon");
-      setDataReady(true);
-    }
-  }, [page, lastId, textFilter]);
+    axios.get(POKEMON_API).then((res) => {
+      // console.log("hola", res.data.count);
+      setPokemonToGet(res.data.count);
+    });
+  }, []);
 
   // fetch pokemon from the API
   useEffect(() => {
-    console.log("need to get", pokemonToGet, "more pokemon");
     if (pokemonToGet > 0) {
+      console.log("need to get", pokemonToGet, " pokemon");
       const dict = pokemonDict;
-      const idsToGet = [...Array(pokemonToGet).keys()]
-        .map((x) => x + lastId)
-        .filter((id) => id < maxPokemonId);
 
-      const promiseList = idsToGet.map((x) => {
-        return axios.get(POKEMON_API + `/${x}`);
-      });
-      console.log("fetching", pokemonToGet, "pokemon");
+      axios.get(POKEMON_API + "?limit=" + pokemonToGet).then((res) => {
+        const promiseList = res.data.results.map((entry) =>
+          axios.get(entry.url)
+        );
       Promise.all(promiseList)
         .then((responseList) => {
           responseList.forEach((res) => {
             dict[res.data.name] = res.data;
           });
           setPokemonDict(dict);
-          setLastId(lastId + responseList.length);
-          setPokemonToGet(0);
+            setDataReady(true);
           console.log("succeded fetching pokemon");
         })
         .catch(() => {
           console.log("failed to fetch pokemon");
         });
+      });
     }
   }, [pokemonToGet]);
 
