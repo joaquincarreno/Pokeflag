@@ -1,11 +1,12 @@
 .entry-container {
     position: absolute;
+    top: 50%;
     left: 50%;
     z-index: 10;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    width: 80%;
-    height: 80%;
+    width: 85%;
+    height: 90%;
     border-radius: 50px;
     background-color: rgba(40, 40, 40, 0.8);
     font-family: 'Public Pixel', sans-serif;
@@ -65,9 +66,12 @@
     background-color: rgba(40, 40, 40, 0);
 }
 
+
 .sprite-container {
     flex-grow: 1;
-    background-image: radial-gradient(rgba(240, 240, 240, 0.3), rgba(40, 40, 40, 0.0) 70%)
+    background-image: radial-gradient(rgba(240, 240, 240, 0.3), rgba(40, 40, 40, 0.0) 70%);
+    width: 20%; 
+    height: 100%;
 }
 
 .data-container {
@@ -77,19 +81,20 @@
     justify-content: space-evenly;
     flex-grow: 1;
     height: 100%;
+    max-width: 80%;
 }
 
 .name {
+    width: 100%;
+    max-height: 20%;
     font-size: 1.8em;
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
-    gap: 5%;
-    max-width: 350px;
 }
 
-
 .id {
+    font-size: 0.8em;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -116,13 +121,13 @@
     font-size: 1.4em;
     display: flex;
     flex-flow: column nowrap;
-    width: 50%;
+    width: 100%;
     justify-self: flex-end;
 }
 
 .stats {
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 

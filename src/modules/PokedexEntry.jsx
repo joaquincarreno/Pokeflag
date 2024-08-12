@@ -112,9 +112,8 @@ function PokedexEntry({
     <div className="entry-container">
       <div className="top-half">
         <div className="sprite-container">
-          <div onClick={() => cry.play()} style={{ top: "0" }}>
+          <div onClick={() => cry.play()} style={{ top: "0", height: "100%" }}>
             <img
-              style={{ width: "100%" }}
               src={
                 flip
                   ? pokedata.sprites.back_default
@@ -125,14 +124,16 @@ function PokedexEntry({
         </div>
         <div className="data-container">
           <div className="name">
-            <div className="id">
-              <img style={{ height: "70px" }} src={POKEBALL_SPRITE_URL} />
-              {pokedata.id < 1000 && "0"}
-              {pokedata.id < 100 && "0"}
-              {pokedata.id < 10 && "0"}
-              {pokedata.id}
+            <img style={{ maxWidth: "30%" }} src={POKEBALL_SPRITE_URL} />
+            <div>
+              <div className="id">
+                #{pokedata.id < 1000 && "0"}
+                {pokedata.id < 100 && "0"}
+                {pokedata.id < 10 && "0"}
+                {pokedata.id}
+              </div>
+              <div>{pokedata.name.toUpperCase()}</div>
             </div>
-            <p>{pokedata.name.toUpperCase()}</p>
           </div>
           <div className="type-container">
             {pokedata.types.map((t, i) => (

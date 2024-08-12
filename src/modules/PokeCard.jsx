@@ -13,9 +13,7 @@ function PokeCard({ pokemon, setter }) {
         <div className="card-name">{capitalizeFirstLetter(pokemon.name)}</div>
         <div className="card-id">#{pokemon.id}: </div>
       </div>
-      <div className="sprite">
-        <img style={{ width: "100%" }} src={pokemon.sprites.front_default} />
-      </div>
+      <img src={pokemon.sprites.front_default} />
     </div>
   );
 }
